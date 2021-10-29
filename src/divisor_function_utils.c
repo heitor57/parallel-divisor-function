@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-bool *serial_divisor_function_sieve_of_eratosthenes(int limit,
+bool *divisor_function_utils_sieve_of_eratosthenes(int limit,
                                                     int *primes_mask_size) {
   *primes_mask_size = limit + 1;
   bool *primes = malloc(*primes_mask_size * sizeof(bool));
@@ -25,7 +25,7 @@ bool *serial_divisor_function_sieve_of_eratosthenes(int limit,
  * @param num_primes
  * @return int
  */
-int serial_divisor_function_df(int number, int *primes, int num_primes) {
+int divisor_function_utils_df(int number, int *primes, int num_primes) {
   int prime, count, num_divisors = 1;
   for (int i = 1; i < num_primes; i++) {
     prime = primes[i];
@@ -41,4 +41,20 @@ int serial_divisor_function_df(int number, int *primes, int num_primes) {
     }
   }
   return num_divisors;
+}
+
+
+bool *divisor_function_utils_parallel_sieve_of_eratosthenes(int limit,
+                                                    int *primes_mask_size) {
+  *primes_mask_size = limit + 1;
+  bool *primes = malloc(*primes_mask_size * sizeof(bool));
+  memset(primes, true, *primes_mask_size * sizeof(bool));
+  primes[0] = false;
+  for (int i = 2; i * i <= limit; i++) {
+    if (primes[i] == true) {
+      for (int j = i * i; j <= limit; j += i)
+        primes[j] = false;
+    }
+  }
+  return primes;
 }
