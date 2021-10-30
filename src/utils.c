@@ -70,7 +70,7 @@ int *initial_setup(int argc, char **argv, int *max_number, int *num_integers) {
   *num_integers = i;
 
 #ifdef DEBUG
-  printf("%d integers, %d lines\n", num_integers, num_lines);
+  printf("%d integers, %d lines\n", *num_integers, num_lines);
 #endif
 
   *max_number = get_max(integers, *num_integers);
