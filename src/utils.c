@@ -16,7 +16,6 @@ int file_num_lines(FILE *f) {
 }
 
 int get_max(int *vector, int num_elements) {
-
   int max = vector[0];
   for (int i = 1; i < num_elements; i++) {
     if (vector[i] > max) {
@@ -26,7 +25,7 @@ int get_max(int *vector, int num_elements) {
   return max;
 }
 
-int *mask_vector_to_int_vector(bool *v, int size, int* int_vector_size) {
+int *mask_vector_to_int_vector(bool *v, int size, int *int_vector_size) {
   int num_true = 0;
   for (int i = 0; i < size; i++) {
     if (v[i] == true) {
@@ -45,13 +44,13 @@ int *mask_vector_to_int_vector(bool *v, int size, int* int_vector_size) {
   return iv;
 }
 
-int* initial_setup(int argc, char **argv, int* max_number,int* num_integers){
+int *initial_setup(int argc, char **argv, int *max_number, int *num_integers) {
   int num, i;
-  if(argc != 3){
+  if (argc != 3) {
     printf("Usage:\n");
-    printf("%s <input file> <output file>\n",argv[0]);
+    printf("%s <input file> <output file>\n", argv[0]);
   }
-  char* fin_name = argv[1];
+  char *fin_name = argv[1];
   FILE *fin = fopen(fin_name, "r");
   if (fin == NULL) {
     fprintf(stderr, "Unable to open file %s\n", fin_name);
@@ -82,14 +81,15 @@ int* initial_setup(int argc, char **argv, int* max_number,int* num_integers){
   return integers;
 }
 
-void write_result(char* fout_name, int *integers_num_divisors,int num_integers){
-  FILE* fout = fopen(fout_name, "w");
+void write_result(char *fout_name, int *integers_num_divisors,
+                  int num_integers) {
+  FILE *fout = fopen(fout_name, "w");
   if (fout == NULL) {
     fprintf(stderr, "Unable to open file %s\n", fout_name);
     exit(1);
   }
   for (int i = 0; i < num_integers; i++) {
-    fprintf(fout, "%d\n",integers_num_divisors[i]);
+    fprintf(fout, "%d\n", integers_num_divisors[i]);
   }
   fclose(fout);
 }
