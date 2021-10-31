@@ -1,17 +1,17 @@
 #include "dlinked_list.h"
 #include "utils.h"
 #include <math.h>
+#include <mpi.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <mpi.h>
 #define dfpack_idx_to_value(idx) (idx) * 2 + 1
 #define dfpack_value_to_idx(value) ((value)-1) / 2
 
-
 /**
- * @brief Transform a bool prime vector to a int vector that contains all primes of the bool vector
+ * @brief Transform a bool prime vector to a int vector that contains all primes
+ * of the bool vector
  *
  * @param primes_mask bool prime mask
  * @param primes_mask_size Mask size
@@ -33,7 +33,8 @@ int *dfpack_prime_mask_to_vector(bool *primes_mask, int primes_mask_size,
 }
 
 /**
- * @brief Sieve of eratosthenes optimized with the removal of even numbers and with fast marking
+ * @brief Sieve of eratosthenes optimized with the removal of even numbers and
+ * with fast marking
  *
  * @param limit Number to limit the prime (sieve) search
  * @param num_primes Returns the number of primes found in the given limit
@@ -103,9 +104,9 @@ int dfpack_df(int number, int *primes, int num_primes) {
   return num_divisors;
 }
 
-
 /**
- * @brief Serial divisor implementation, that computes the divisor function for multiple integers
+ * @brief Serial divisor implementation, that computes the divisor function for
+ * multiple integers
  *
  * @param integers vector of int numbers
  * @param max_number value of the highest int in the vector
@@ -114,7 +115,8 @@ int dfpack_df(int number, int *primes, int num_primes) {
  */
 int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
   int num_primes;
-  int *primes = dfpack_sieve_of_eratosthenes((int)sqrt(max_number), &num_primes);
+  int *primes =
+      dfpack_sieve_of_eratosthenes((int)sqrt(max_number), &num_primes);
   int *integers_num_divisors = malloc(num_integers * sizeof(int));
   // not saving directly just to profile only the computation
   for (int i = 0; i < num_integers; i++) {
@@ -127,4 +129,3 @@ int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
   free(primes);
   return integers_num_divisors;
 }
-

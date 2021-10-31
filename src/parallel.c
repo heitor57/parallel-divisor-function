@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
   int comm_size;
   MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
 #ifndef NDEBUG
-      printf("%d ON\n", rank);
+  printf("%d ON\n", rank);
 #endif
   if (!rank) {
     int max_number, num_integers;
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 
     integers = initial_setup(argc, argv, &num_integers);
 #ifndef NDEBUG
-      printf("%d %d\n", rank, num_integers);
+    printf("%d %d\n", rank, num_integers);
 #endif
 
     MPI_Barrier(MPI_COMM_WORLD);
@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
     int *blocklenghts = malloc(sizeof(int) * comm_size);
     // send blocks lengths
     for (int i = 1; i < comm_size; i++) {
-      blocklenghts[i] = BLOCK_SIZE(i-1, comm_size-1, num_integers);
+      blocklenghts[i] = BLOCK_SIZE(i - 1, comm_size - 1, num_integers);
 #ifndef NDEBUG
       printf("%d %d\n", i, blocklenghts[i]);
 #endif
@@ -45,20 +45,21 @@ int main(int argc, char **argv) {
     MPI_Barrier(MPI_COMM_WORLD);
     // send integers
     for (int i = 1; i < comm_size; i++)
-      MPI_Send(&integers[BLOCK_FLOOR(i-1, comm_size-1, num_integers)],
-               BLOCK_SIZE(i-1, comm_size-1, num_integers), MPI_INT, i, 0,
+      MPI_Send(&integers[BLOCK_FLOOR(i - 1, comm_size - 1, num_integers)],
+               BLOCK_SIZE(i - 1, comm_size - 1, num_integers), MPI_INT, i, 0,
                MPI_COMM_WORLD);
 
     integers_num_divisors = malloc(sizeof(int) * num_integers);
 
     MPI_Status status;
     // receive results
-    for (int i = 1; i < comm_size; i++){
+    for (int i = 1; i < comm_size; i++) {
 #ifndef NDEBUG
       printf("%d waiting %d\n", rank, i);
 #endif
-      MPI_Recv(&integers_num_divisors[BLOCK_FLOOR(i-1, comm_size-1, num_integers)],
-               BLOCK_SIZE(i-1, comm_size-1, num_integers), MPI_INT, i, 0,
+      MPI_Recv(&integers_num_divisors[BLOCK_FLOOR(i - 1, comm_size - 1,
+                                                  num_integers)],
+               BLOCK_SIZE(i - 1, comm_size - 1, num_integers), MPI_INT, i, 0,
                MPI_COMM_WORLD, &status);
     }
 
@@ -77,31 +78,32 @@ int main(int argc, char **argv) {
     MPI_Status status;
     int num_integers;
 #ifndef NDEBUG
-      printf("%d PASSED FIRST BARRIER\n", rank);
+    printf("%d PASSED FIRST BARRIER\n", rank);
 #endif
     // receive block length
     MPI_Recv(&num_integers, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
 #ifndef NDEBUG
-      printf("%d %d\n", rank, num_integers);
+    printf("%d %d\n", rank, num_integers);
 #endif
     int *integers = malloc(sizeof(int) * num_integers);
     MPI_Barrier(MPI_COMM_WORLD);
     // receive integers
-    MPI_Recv(&integers[0], num_integers, MPI_INT, 0, 0, MPI_COMM_WORLD, &status);
+    MPI_Recv(&integers[0], num_integers, MPI_INT, 0, 0, MPI_COMM_WORLD,
+             &status);
 #ifndef NDEBUG
-      printf("%d Received integers\n", rank);
-      printf("%d Received integers with %d number\n", rank,integers[0]);
-      printf("%d Received integers with %d max number\n", rank,get_max(integers, num_integers));
+    printf("%d Received integers\n", rank);
+    printf("%d Received integers with %d number\n", rank, integers[0]);
+    printf("%d Received integers with %d max number\n", rank,
+           get_max(integers, num_integers));
 #endif
     int *integers_num_divisors = dfpack_serial_df(
         integers, get_max(integers, num_integers), num_integers);
-
 
     MPI_Send(&integers_num_divisors[0], num_integers, MPI_INT, 0, 0,
              MPI_COMM_WORLD);
 
 #ifndef NDEBUG
-      printf("%d finished, just waiting\n", rank);
+    printf("%d finished, just waiting\n", rank);
 #endif
     MPI_Barrier(MPI_COMM_WORLD);
     free(integers);
