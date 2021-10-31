@@ -23,7 +23,6 @@ cwd=$(VIM_ROOT)
 output=quickfix
 errorformat=%f:%l:%m
 save=1
-
 [file-build-run-test-blocks]
 command=make && ./serial-blocks-divisor-function ./data/entrada.txt ./data/entrada_out.txt && python3 ./test/df.py ./data/entrada.txt ./data/entrada_out.txt
 cwd=$(VIM_ROOT)

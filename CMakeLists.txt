@@ -29,22 +29,20 @@ find_package(MPI REQUIRED)
 
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
 list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)
-list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial_blocks.c)
+#list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial_blocks.c)
 add_executable(serial-divisor-function ${SRC_FILES})
 target_link_libraries(serial-divisor-function m)
 
-file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
-list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)
-list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial.c)
-add_executable(serial-blocks-divisor-function ${SRC_FILES})
-target_link_libraries(serial-blocks-divisor-function m)
+#file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
+#list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)
+#list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial.c)
+#add_executable(serial-blocks-divisor-function ${SRC_FILES})
+#target_link_libraries(serial-blocks-divisor-function m)
 
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
-list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial_blocks.c)
+#list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial_blocks.c)
 list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial.c)
 add_executable(parallel-divisor-function ${SRC_FILES})
-#target_link_libraries(parallel-divisor-function )
-
 target_link_libraries(parallel-divisor-function
   PRIVATE
   m
