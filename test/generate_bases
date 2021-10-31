@@ -1,0 +1,4 @@
+#!/bin/bash
+fin=./data/t1e4; echo "$fin"; ./test/random_numbers.py "$fin".txt 10000;
+fin=./data/t1e5; echo "$fin"; ./test/random_numbers.py "$fin".txt 100000;
+fin=./data/t1e6; echo "$fin"; ./test/random_numbers.py "$fin".txt 1000000;

@@ -1,1 +1,5 @@
-# parallel-divisor-function
+# MPI Divisor Function
+
+# Usage
+
+				
