@@ -12,4 +12,7 @@ int *dfpack_serial_df(int *integers, int max_number, int num_integers);
 
 int *dfpack_serial_blocks_df(int *integers, int max_number, int num_integers,
                              int num_blocks);
+
+int *dfpack_parallel_df(int *integers, int max_number, int num_integers,
+                        int rank) ;
 #endif

@@ -31,7 +31,11 @@ file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
 list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)
 #list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial_blocks.c)
 add_executable(serial-divisor-function ${SRC_FILES})
-target_link_libraries(serial-divisor-function m)
+#target_link_libraries(serial-divisor-function m)
+target_link_libraries(serial-divisor-function
+  PRIVATE
+  m
+  MPI::MPI_C)
 
 #file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
 #list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)
