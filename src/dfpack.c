@@ -6,7 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+// transforms the index to a real value
 #define dfpack_idx_to_value(idx) (idx) * 2 + 1
+// transforms a real value to a index of the vector
 #define dfpack_value_to_idx(value) ((value)-1) / 2
 
 /**
@@ -115,10 +117,14 @@ int dfpack_df(int number, int *primes, int num_primes) {
  */
 int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
   int num_primes;
+  // calculate the sieve only for the sqrt(max_number) as there is no need to
+  // calculate the rest of primes to determine the number of divisors of a
+  // number (see dfpack_df function)
   int *primes =
       dfpack_sieve_of_eratosthenes((int)sqrt(max_number), &num_primes);
   int *integers_num_divisors = malloc(num_integers * sizeof(int));
   // not saving directly just to profile only the computation
+  // Calculate the divisor function for each integer
   for (int i = 0; i < num_integers; i++) {
     integers_num_divisors[i] = dfpack_df(integers[i], primes, num_primes);
 #ifndef NDEBUG
