@@ -1,3 +1,5 @@
+MPI_COMPILE_FLAGS = $(shell mpicc --showme:compile)
+MPI_LINK_FLAGS = $(shell mpicc --showme:link)
 #### PROJECT SETTINGS ####
 # The name of the executable to be created
 BIN_NAME := parallel-divisor-function
@@ -10,7 +12,7 @@ SRC_PATH = .
 # Space-separated pkg-config libraries used by this project
 LIBS =
 # General compiler flags
-COMPILE_FLAGS = -std=c99 -Wall -Wextra -lm -pg -g
+COMPILE_FLAGS = -std=c99 -Wall -Wextra -lm -g $(MPI_COMPILE_FLAGS)
 # Additional release-specific flags
 RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
@@ -18,7 +20,7 @@ DCOMPILE_FLAGS = -D DEBUG
 # Add additional include paths
 INCLUDES = -I $(SRC_PATH)
 # General linker settings
-LINK_FLAGS = -lm -pg
+LINK_FLAGS = -lm $(MPI_LINK_FLAGS)
 # Additional release-specific linker settings
 RLINK_FLAGS =
 # Additional debug-specific linker settings

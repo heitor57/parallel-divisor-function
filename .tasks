@@ -12,13 +12,13 @@ output=quickfix
 errorformat=%f:%l:%m
 save=1
 [file-build-run]
-command=make && ./parallel-divisor-function ./data/t1.txt ./data/t1_out.txt
+command=make && ./parallel-divisor-function ./data/t1.txt ./data/t1_out.txt serial
 cwd=$(VIM_ROOT)
 output=quickfix
 errorformat=%f:%l:%m
 save=1
 [file-build-run-valgrind]
-command=make && valgrind ./parallel-divisor-function ./data/t1.txt ./data/t1_out.txt
+command=make && valgrind --leak-check=full --show-leak-kinds=all ./parallel-divisor-function ./data/t1.txt ./data/t1_out.txt
 cwd=$(VIM_ROOT)
 output=quickfix
 errorformat=%f:%l:%m

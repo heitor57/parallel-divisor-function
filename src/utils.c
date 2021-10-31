@@ -46,9 +46,14 @@ int *mask_vector_to_int_vector(bool *v, int size, int *int_vector_size) {
 
 int *initial_setup(int argc, char **argv, int *max_number, int *num_integers) {
   int num, i;
-  if (argc != 3) {
+  if (argc != 3 && argc != 4) {
     printf("Usage:\n");
-    printf("%s <input file> <output file>\n", argv[0]);
+    printf("%s <input file> <output file> <serial|parallel>(optional)\n", argv[0]);
+    printf("Examples:\n");
+    printf("%s entrada.txt saida.txt\n",argv[0]);
+    printf("%s in.txt out1.txt serial\n",argv[0]);
+    printf("%s in.txt out2.txt parallel\n",argv[0]);
+    exit(1);
   }
   char *fin_name = argv[1];
   FILE *fin = fopen(fin_name, "r");
