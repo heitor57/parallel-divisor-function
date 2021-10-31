@@ -9,7 +9,8 @@ int main(int argc, char **argv) {
   int max_number, num_integers;
   int *integers;
 
-  integers = initial_setup(argc, argv, &max_number, &num_integers);
+  integers = initial_setup(argc, argv, &num_integers);
+  max_number=get_max(integers, num_integers);
   
   clock_t begin = clock();
   

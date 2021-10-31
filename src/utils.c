@@ -44,7 +44,7 @@ int *mask_vector_to_int_vector(bool *v, int size, int *int_vector_size) {
   return iv;
 }
 
-int *initial_setup(int argc, char **argv, int *max_number, int *num_integers) {
+int *initial_setup(int argc, char **argv, int *num_integers) {
   int num, i;
   if (argc != 3) {
     printf("Usage:\n");
@@ -78,7 +78,7 @@ int *initial_setup(int argc, char **argv, int *max_number, int *num_integers) {
   printf("%d integers, %d lines\n", *num_integers, num_lines);
 #endif
 
-  *max_number = get_max(integers, *num_integers);
+  /**max_number = get_max(integers, *num_integers);*/
 
 #ifdef DEBUG
   printf("maximum number: %d\n", *max_number);
