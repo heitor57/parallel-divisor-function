@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
   
   int *integers_num_divisors = NULL;
   integers_num_divisors =
-      dfpack_serial_df(integers, max_number, num_integers);
+      dfpack_serial_blocks_df(integers, max_number, num_integers,20);
   clock_t end = clock();
   double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
   printf("Time spend with computation: %f\n",time_spent);

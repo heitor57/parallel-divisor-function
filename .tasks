@@ -1,24 +1,31 @@
 [file-build-run-test]
-command=make && ./parallel-divisor-function ./data/entrada.txt ./data/entrada_out.txt && python3 ./test/df.py ./data/entrada.txt ./data/entrada_out.txt
+command=make && ./serial-divisor-function ./data/entrada.txt ./data/entrada_out.txt && python3 ./test/df.py ./data/entrada.txt ./data/entrada_out.txt
 cwd=$(VIM_ROOT)
 output=quickfix
 errorformat=%f:%l:%m
 save=1
 
 [file-build-run-original]
-command=make && ./parallel-divisor-function ./data/entrada.txt ./data/entrada_out.txt
+command=make && ./serial-divisor-function ./data/entrada.txt ./data/entrada_out.txt
 cwd=$(VIM_ROOT)
 output=quickfix
 errorformat=%f:%l:%m
 save=1
 [file-build-run]
-command=make && ./parallel-divisor-function ./data/t1.txt ./data/t1_out.txt serial
+command=make && ./serial-divisor-function ./data/t1.txt ./data/t1_out.txt serial
 cwd=$(VIM_ROOT)
 output=quickfix
 errorformat=%f:%l:%m
 save=1
 [file-build-run-valgrind]
-command=make && valgrind --leak-check=full --show-leak-kinds=all ./parallel-divisor-function ./data/t1.txt ./data/t1_out.txt
+command=make && valgrind --leak-check=full --show-leak-kinds=all ./serial-divisor-function ./data/t1.txt ./data/t1_out.txt
+cwd=$(VIM_ROOT)
+output=quickfix
+errorformat=%f:%l:%m
+save=1
+
+[file-build-run-test-blocks]
+command=make && ./serial-blocks-divisor-function ./data/entrada.txt ./data/entrada_out.txt && python3 ./test/df.py ./data/entrada.txt ./data/entrada_out.txt
 cwd=$(VIM_ROOT)
 output=quickfix
 errorformat=%f:%l:%m

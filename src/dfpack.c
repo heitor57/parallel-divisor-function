@@ -5,8 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#define dfpack_idx_to_value(idx) idx * 2 + 1
-#define dfpack_value_to_idx(value) (value - 1) / 2
+#define dfpack_idx_to_value(idx) (idx) * 2 + 1
+#define dfpack_value_to_idx(value) ((value)-1) / 2
+#define BLOCK_FLOOR(id, m, n) ((id) * (n) / (m))
+#define BLOCK_CEIL(id, m, n) (BLOCK_FLOOR((id) + 1, m, n) - 1)
+#define BLOCK_SIZE(id, m, n) (BLOCK_CEIL(id, m, n) - BLOCK_FLOOR(id, m, n) + 1)
 
 int *dfpack_prime_mask_to_vector(bool *primes_mask, int primes_mask_size,
                                  int num_primes) {
@@ -19,6 +22,72 @@ int *dfpack_prime_mask_to_vector(bool *primes_mask, int primes_mask_size,
       j++;
     }
   }
+  return primes;
+}
+
+int *dfpack_sieve_of_eratosthenes_blocks(int limit, int *num_primes,
+                                         int num_blocks) {
+  int primes_mask_size = (limit + 1) / 2;
+  if (num_blocks > primes_mask_size) {
+    fprintf(stderr, "Number of blocks greather than primes mask size\n");
+    exit(1);
+  }
+  bool *global_block_primes_mask = malloc(primes_mask_size * sizeof(bool));
+
+  int global_primes_count = 0;
+  global_block_primes_mask[0]= false;
+  if (limit >= 2) {
+    global_primes_count++;
+  }
+  for (int bid; bid < num_blocks; bid++) {
+    int floor_value = 2+BLOCK_FLOOR(bid, num_blocks, primes_mask_size - 1);
+    int block_size = BLOCK_SIZE(bid, num_blocks, primes_mask_size - 1);
+    int prime_index = 0;
+    int cvalue = 2;
+    bool *local_block_primes_mask = malloc(block_size * sizeof(bool));
+    memset(local_block_primes_mask, true, block_size * sizeof(bool));
+    int first_index = 0;
+    do {
+      if (cvalue > floor_value) {
+        first_index = 2*cvalue - floor_value;
+      } else if (cvalue * cvalue > floor_value) {
+        first_index = cvalue * cvalue - floor_value;
+      } else {
+        if (floor_value % cvalue == 0)
+          first_index = 0;
+        else
+          first_index = cvalue - (floor_value % cvalue);
+      }
+      for (int i = first_index; i < block_size; i += cvalue) {
+        local_block_primes_mask[i] = false;
+      }
+      while (local_block_primes_mask[++prime_index]==false)
+        ;
+      cvalue = 2+prime_index;
+    } while (cvalue * cvalue <= limit);
+    int local_primes_count = 0;
+    int local_to_global_offset = bid * num_blocks;
+    for (int i = 0; i < block_size; i++) {
+      global_block_primes_mask[i + local_to_global_offset] =
+          local_block_primes_mask[i];
+      if (local_block_primes_mask[i] == true) {
+        local_primes_count++;
+      }
+    }
+    free(local_block_primes_mask);
+    global_primes_count += local_primes_count;
+  }
+  int i;
+  while (i < primes_mask_size) {
+    if (global_block_primes_mask[i]) {
+      (*num_primes)++;
+    }
+    i++;
+  }
+  int *primes =
+      dfpack_prime_mask_to_vector(global_block_primes_mask, primes_mask_size, *num_primes);
+  free(global_block_primes_mask);
+
   return primes;
 }
 
@@ -38,8 +107,9 @@ int *dfpack_sieve_of_eratosthenes(int limit, int *num_primes) {
     if (primes_mask[i] == true) {
       prime = dfpack_idx_to_value(i);
       (*num_primes)++;
-      /*dlinked_list_insert_end(li, prime);*/
       for (int j = i * (2 * i + 2); j < primes_mask_size; j += prime)
+        /* Start with prime^2=2*(2*i^2+2*i)+1 and sieve at every double multiple
+         * of prime. */
         primes_mask[j] = false;
     }
   }
@@ -57,7 +127,7 @@ int *dfpack_sieve_of_eratosthenes(int limit, int *num_primes) {
 
 int dfpack_df(int number, int *primes, int num_primes) {
   int prime, count, num_divisors = 1;
-  for (int i = 0;  i < num_primes; i++) {
+  for (int i = 0; i < num_primes; i++) {
     prime = primes[i];
     count = 0;
     if (number % prime == 0) {
@@ -68,8 +138,8 @@ int dfpack_df(int number, int *primes, int num_primes) {
       num_divisors = num_divisors * (count + 1);
     }
 
-    if(prime>sqrt(number)){
-      if(number != 1)
+    if (prime > sqrt(number)) {
+      if (number != 1)
         num_divisors *= 2;
       break;
     }
@@ -77,18 +147,19 @@ int dfpack_df(int number, int *primes, int num_primes) {
   return num_divisors;
 }
 
-/*bool *dfpack_parallel_sieve_of_eratosthenes(int limit, int *primes_mask_size) {*/
-  /**primes_mask_size = limit + 1;*/
-  /*bool *primes = malloc(*primes_mask_size * sizeof(bool));*/
-  /*memset(primes, true, *primes_mask_size * sizeof(bool));*/
-  /*primes[0] = false;*/
-  /*for (int i = 2; i * i <= limit; i++) {*/
-    /*if (primes[i] == true) {*/
-      /*for (int j = i * i; j <= limit; j += i)*/
-        /*primes[j] = false;*/
-    /*}*/
-  /*}*/
-  /*return primes;*/
+/*bool *dfpack_parallel_sieve_of_eratosthenes(int limit, int *primes_mask_size)
+ * {*/
+/**primes_mask_size = limit + 1;*/
+/*bool *primes = malloc(*primes_mask_size * sizeof(bool));*/
+/*memset(primes, true, *primes_mask_size * sizeof(bool));*/
+/*primes[0] = false;*/
+/*for (int i = 2; i * i <= limit; i++) {*/
+/*if (primes[i] == true) {*/
+/*for (int j = i * i; j <= limit; j += i)*/
+/*primes[j] = false;*/
+/*}*/
+/*}*/
+/*return primes;*/
 /*}*/
 
 int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
@@ -107,6 +178,23 @@ int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
   return integers_num_divisors;
 }
 
+int *dfpack_serial_blocks_df(int *integers, int max_number, int num_integers,
+                             int num_blocks) {
+  int num_primes;
+  int *primes =
+      dfpack_sieve_of_eratosthenes_blocks(max_number, &num_primes, num_blocks);
+  int *integers_num_divisors = malloc(num_integers * sizeof(int));
+  // not saving directly just to profile only the computation
+  for (int i = 0; i < num_integers; i++) {
+    integers_num_divisors[i] = dfpack_df(integers[i], primes, num_primes);
+#ifdef DEBUG
+    printf("integer: %d, integers_num_divisors: %d\n", integers[i],
+           integers_num_divisors[i]);
+#endif
+  }
+  free(primes);
+  return integers_num_divisors;
+}
 
 int *dfpack_parallel_sieve_of_eratosthenes(int limit, int *num_primes) {
   int primes_mask_size = (limit + 1) / 2;

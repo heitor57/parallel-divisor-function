@@ -9,4 +9,7 @@ bool *dfpack_parallel_sieve_of_eratosthenes(int limit, int *primes_mask_size);
 int dfpack_df(int number, int *primes, int num_primes);
 
 int *dfpack_serial_df(int *integers, int max_number, int num_integers);
+
+int *dfpack_serial_blocks_df(int *integers, int max_number, int num_integers,
+                             int num_blocks);
 #endif
