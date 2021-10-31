@@ -1,0 +1,97 @@
+\documentclass{article}
+
+\usepackage{listings}
+\usepackage{hyphenat}
+\usepackage{float}
+\usepackage[T1]{fontenc}
+\usepackage{hyperref,adjustbox}
+\usepackage{graphicx}
+\usepackage{pdfpages}
+\usepackage[brazilian]{babel}
+\usepackage{adjustbox}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{tabulary}
+\usepackage{pifont}% http://ctan.org/pkg/pifont
+\newcommand{\cmark}{\ding{51}}%
+\newcommand{\xmark}{\ding{55}}%
+\usepackage{tikz}
+\usepackage{natbib}
+\usepackage[T1]{fontenc}
+\usepackage{enumitem}
+
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\Large\bfseries}{\thesection}{1em}{}[{\titlerule[0.8pt]}]
+
+
+\title{Trabalho Prático - Identificação de números primos \\
+	\large Computação Paralela}
+
+\author{Heitor L. Werneck}
+\begin{document}
+\maketitle
+
+\section{Introdução}
+
+Um número primo é um número natural maior que 1 que não é produto de dois
+números naturais menores. Números naturais maiores que 1 que não são primos são
+chamados de número composto. A identificação de um número primo também tem
+relação com a função divisora do mesmo, já que os números primos tem exatamente
+2 divisores exatos, então com o número de divisores exatos de um número é
+possível identificar a primalidade de um número (tarefa um pouco mais complexa
+que o teste de primalidade). Em matemática, e especificamente na teoria dos
+números, uma função divisora é uma função aritmética relacionada aos divisores
+de um inteiro. Quando referida como função divisora, ela conta o número de
+divisores de um inteiro (incluindo 1 e o próprio número). Diversas propriedades
+matemáticas podem ser observadas atráves da observação da função divisora ao
+longo de diferentes amostragens, que pode potencialmente auxiliar matematicos
+nas suas áreas de pesquisas, e talvez até mesmo no caso de um algoritmo
+suficientemente eficiente pode ajudar a eliminar ou "reforçar" ainda mais
+colorarios existentes na área.
+
+Nesse trabalho será feito a implementação paralela mestre-escravo usando MPI de um algoritmo que identifica números primos em um vetor de N inteiros.
+
+\subsection{Especificação}
+O programa deverá ler o arquivo de entrada deverá e carregado para memoria no
+processo mestre. Após o processamento, cada processo escravo deverá retornar
+para
+o processo mestre quantos divisores exatos possui cada valor armazenado na
+sua fatia do vetor. depois que o último escravo terminar, o processo mestre
+deverá colocar o número de divisores de cada elemento do arquivo de entrada
+em um arquivo de saída (saída.txt) na ordem em que os valores originais
+estavam no arquivo de entrada. A tomada de tempo das execuções será
+feita somente no processo mestre após leitura do arquivo de entrada e antes
+da escrita do arquivo de saída, ou seja,
+não será considerado o tempo de
+entrada/saída.
+
+A paralelização da aplicação será dividida em 4 partes, as quais terão um relatório técnico. São elas:
+\begin{enumerate}
+	\item perfil de desempenho sequencial (usando prof)
+	\item identificação das oportunidades de paralelização
+	\item paralelização
+	\item avaliação dos ganhos da paralelização
+\end{enumerate}
+
+\subsection{Problema}
+
+Como mostrado na seção anterior o 
+problema é simples e consiste em determinar o número de divisores exatos dos elementos $a_i$ de um vetor $A$ de tamanho $N$.
+
+\section{Solução}
+
+Para solucionar esse problema procura-se inicialmente uma função/algoritmo $d(a_i)$ que consiga determinar o número de divisores de um elemento $a_i$.
+
+Esse problema pode ser solucionado facilmente com um algoritmo simples
+
+\section{Implementação}
+
+\section{Resultados e Análises}
+
+
+
+\bibliographystyle{plainnat}
+\bibliography{doc.bib}
+\end{document}
