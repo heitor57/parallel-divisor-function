@@ -3,12 +3,19 @@ cmake_minimum_required(VERSION 3.9)
 set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_COMPILER "g++")
 project(divisor-function C)
-message("${CMAKE_SOURCE_DIR}")
+
+#add_definitions(-DDEBUG)
+#set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DENABLE_DEBUG_MACRO")
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DENABLE_DEBUG_MACRO")
+#set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DDEBUG")
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG")
+#add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")
+#message("${CMAKE_SOURCE_DIR}")
 set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
-
 find_package(MPI REQUIRED)
+
 #add_definitions(-DOMPI_SKIP_MPICXX)
 #execute_process (
     #COMMAND bash -c "mpicc --showme:compile"
@@ -36,6 +43,8 @@ target_link_libraries(serialdf
   PRIVATE
   m
   MPI::MPI_C)
+
+#target_compile_definitions(serialdf PUBLIC "$<$<CONFIG:DEBUG>:DEBUG>")
 
 #file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
 #list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)

@@ -105,7 +105,7 @@ int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
   // not saving directly just to profile only the computation
   for (int i = 0; i < num_integers; i++) {
     integers_num_divisors[i] = dfpack_df(integers[i], primes, num_primes);
-#ifdef DEBUG
+#ifndef NDEBUG
     printf("integer: %d, integers_num_divisors: %d\n", integers[i],
            integers_num_divisors[i]);
 #endif

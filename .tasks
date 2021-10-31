@@ -42,3 +42,10 @@ cwd=$(VIM_ROOT)
 output=quickfix
 errorformat=%f:%l:%m
 save=1
+
+[file-build-run-parallel]
+command=make && mpirun  --mca opal_warn_on_missing_libcuda 0 --use-hwthread-cpus -n 3 ./paralleldf ./data/entrada.txt ./data/entrada_out.txt
+cwd=$(VIM_ROOT)
+output=quickfix
+errorformat=%f:%l:%m
+save=1

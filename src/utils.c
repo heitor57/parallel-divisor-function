@@ -74,15 +74,15 @@ int *initial_setup(int argc, char **argv, int *num_integers) {
   fclose(fin);
   *num_integers = i;
 
-#ifdef DEBUG
+#ifndef NDEBUG
   printf("%d integers, %d lines\n", *num_integers, num_lines);
 #endif
 
   /**max_number = get_max(integers, *num_integers);*/
 
-#ifdef DEBUG
-  printf("maximum number: %d\n", *max_number);
-#endif
+/*#ifndef NDEBUG*/
+  /*printf("maximum number: %d\n", *max_number);*/
+/*#endif*/
   return integers;
 }
 
