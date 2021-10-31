@@ -8,9 +8,6 @@
 #include <mpi.h>
 #define dfpack_idx_to_value(idx) (idx) * 2 + 1
 #define dfpack_value_to_idx(value) ((value)-1) / 2
-#define BLOCK_FLOOR(id, m, n) ((id) * (n) / (m))
-#define BLOCK_CEIL(id, m, n) (BLOCK_FLOOR((id) + 1, m, n) - 1)
-#define BLOCK_SIZE(id, m, n) (BLOCK_CEIL(id, m, n) - BLOCK_FLOOR(id, m, n) + 1)
 
 
 int *dfpack_prime_mask_to_vector(bool *primes_mask, int primes_mask_size,
@@ -100,7 +97,7 @@ int dfpack_df(int number, int *primes, int num_primes) {
 
 int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
   int num_primes;
-  int *primes = dfpack_sieve_of_eratosthenes(max_number, &num_primes);
+  int *primes = dfpack_sieve_of_eratosthenes((int)sqrt(max_number), &num_primes);
   int *integers_num_divisors = malloc(num_integers * sizeof(int));
   // not saving directly just to profile only the computation
   for (int i = 0; i < num_integers; i++) {

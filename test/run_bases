@@ -1,0 +1,9 @@
+#!/bin/bash
+make
+fin=./data/t1e4; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdout_serial.txt
+fin=./data/t1e5; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdout_serial.txt
+fin=./data/t1e6; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdout_serial.txt
+
+fin=./data/t1e4; echo $fin parallel; ./paralleldf "$fin".txt "$fin"_parallel.txt > "$fin"_stdout_parallel.txt
+fin=./data/t1e5; echo $fin parallel; ./paralleldf "$fin".txt "$fin"_parallel.txt > "$fin"_stdout_parallel.txt
+fin=./data/t1e6; echo $fin parallel; ./paralleldf "$fin".txt "$fin"_parallel.txt > "$fin"_stdout_parallel.txt

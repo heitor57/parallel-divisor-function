@@ -4,6 +4,9 @@ set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_COMPILER "g++")
 project(divisor-function C)
 
+#set(CMAKE_CXX_FLAGS_RELEASE "-fno-reorder-functions" "-fno-inline" "-no-pie")
+#set(CMAKE_C_FLAGS_RELEASE "-fno-reorder-functions" "-fno-inline" "-no-pie")
+
 #add_definitions(-DDEBUG)
 #set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -DENABLE_DEBUG_MACRO")
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DENABLE_DEBUG_MACRO")
@@ -16,7 +19,7 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 find_package(MPI REQUIRED)
 
-#add_definitions(-DOMPI_SKIP_MPICXX)
+add_definitions(-DNDEBUG)
 #execute_process (
     #COMMAND bash -c "mpicc --showme:compile"
     #OUTPUT_VARIABLE mpi_compile
@@ -43,6 +46,9 @@ target_link_libraries(serialdf
   PRIVATE
   m
   MPI::MPI_C)
+#target_compile_options(serialdf PRIVATE -pg -g -O3)
+target_compile_options(serialdf PRIVATE -pg -g)
+target_link_options(serialdf PRIVATE -pg -g)
 
 #target_compile_definitions(serialdf PUBLIC "$<$<CONFIG:DEBUG>:DEBUG>")
 
