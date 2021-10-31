@@ -1,0 +1,16 @@
+cmake_minimum_required(VERSION 3.10)
+project(divisor-function)
+message("${CMAKE_SOURCE_DIR}")
+set(CMAKE_BINARY_DIR ${CMAKE_SOURCE_DIR})
+set(EXECUTABLE_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
+
+file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
+list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)
+add_executable(serial-divisor-function ${SRC_FILES})
+target_link_libraries(serial-divisor-function m)
+
+file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
+list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial.c)
+add_executable(parallel-divisor-function ${SRC_FILES})
+target_link_libraries(parallel-divisor-function m)

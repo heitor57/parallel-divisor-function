@@ -5,14 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <mpi.h>
 int main(int argc, char **argv) {
   int max_number, num_integers;
   int *integers;
 
   integers = initial_setup(argc, argv, &max_number, &num_integers);
-
+  
   clock_t begin = clock();
-
+  
   int *integers_num_divisors = NULL;
   integers_num_divisors =
       dfpack_serial_df(integers, max_number, num_integers);
