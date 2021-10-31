@@ -10,6 +10,14 @@
 #define dfpack_value_to_idx(value) ((value)-1) / 2
 
 
+/**
+ * @brief Transform a bool prime vector to a int vector that contains all primes of the bool vector
+ *
+ * @param primes_mask bool prime mask
+ * @param primes_mask_size Mask size
+ * @param num_primes Number of primes in the primes mask
+ * @return int prime vector
+ */
 int *dfpack_prime_mask_to_vector(bool *primes_mask, int primes_mask_size,
                                  int num_primes) {
   int *primes = malloc(sizeof(int) * num_primes);
@@ -24,6 +32,13 @@ int *dfpack_prime_mask_to_vector(bool *primes_mask, int primes_mask_size,
   return primes;
 }
 
+/**
+ * @brief Sieve of eratosthenes optimized with the removal of even numbers and with fast marking
+ *
+ * @param limit Number to limit the prime (sieve) search
+ * @param num_primes Returns the number of primes found in the given limit
+ * @return int vector with the primes found
+ */
 int *dfpack_sieve_of_eratosthenes(int limit, int *num_primes) {
   int primes_mask_size = (limit + 1) / 2;
   bool *primes_mask = malloc(primes_mask_size * sizeof(bool));
@@ -58,6 +73,14 @@ int *dfpack_sieve_of_eratosthenes(int limit, int *num_primes) {
   return primes;
 }
 
+/**
+ * @brief Divisor function, it gives the number of exact divisors of a number
+ *
+ * @param number Number to found the number of divisors
+ * @param primes List of primes to guide the divisors search
+ * @param num_primes Number of primes in the vector
+ * @return number of divisors of the given number
+ */
 int dfpack_df(int number, int *primes, int num_primes) {
   int prime, count, num_divisors = 1;
   for (int i = 0; i < num_primes; i++) {
@@ -80,21 +103,15 @@ int dfpack_df(int number, int *primes, int num_primes) {
   return num_divisors;
 }
 
-/*bool *dfpack_parallel_sieve_of_eratosthenes(int limit, int *primes_mask_size)
- * {*/
-/**primes_mask_size = limit + 1;*/
-/*bool *primes = malloc(*primes_mask_size * sizeof(bool));*/
-/*memset(primes, true, *primes_mask_size * sizeof(bool));*/
-/*primes[0] = false;*/
-/*for (int i = 2; i * i <= limit; i++) {*/
-/*if (primes[i] == true) {*/
-/*for (int j = i * i; j <= limit; j += i)*/
-/*primes[j] = false;*/
-/*}*/
-/*}*/
-/*return primes;*/
-/*}*/
 
+/**
+ * @brief Serial divisor implementation, that computes the divisor function for multiple integers
+ *
+ * @param integers vector of int numbers
+ * @param max_number value of the highest int in the vector
+ * @param num_integers number of integers in the vector
+ * @return list of number of exact divisors of the given integers
+ */
 int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
   int num_primes;
   int *primes = dfpack_sieve_of_eratosthenes((int)sqrt(max_number), &num_primes);

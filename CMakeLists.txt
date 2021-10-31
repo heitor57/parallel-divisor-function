@@ -47,8 +47,8 @@ target_link_libraries(serialdf
   m
   MPI::MPI_C)
 #target_compile_options(serialdf PRIVATE -pg -g -O3)
-target_compile_options(serialdf PRIVATE -pg -g)
-target_link_options(serialdf PRIVATE -pg -g)
+#target_compile_options(serialdf PRIVATE -pg -g)
+#target_link_options(serialdf PRIVATE -pg -g)
 
 #target_compile_definitions(serialdf PUBLIC "$<$<CONFIG:DEBUG>:DEBUG>")
 
