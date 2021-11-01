@@ -1,4 +1,3 @@
-#include "dlinked_list.h"
 #include "utils.h"
 #include <math.h>
 #include <mpi.h>
