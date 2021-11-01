@@ -260,10 +260,12 @@ entrada.txt                         saida.txt
 
 É possível ver que nenhum desses números são primos, pois nenhum deles possui 2 como saída (2 divisores, que no caso seria o próprio número e o número 1). As saídas foram todas extensivamente testadas com uma biblioteca do Python (arith-lib) e nenhuma incongruência foi observada.
 
-\section{Memória}
+\subsection{Memória}
 
 Para verificação de qualquer vazamento de memória foi utilizado o \textit{Valgrind}. Como pode ser visto abaixo, em uma execução normal não existe qualquer problema em relação a vazamento de memória com o programa.
 
+{
+\scriptsize
 \begin{verbatim}
 ==279131== Memcheck, a memory error detector
 ==279131== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
@@ -281,6 +283,7 @@ Time spend with computation: 0.097611
 ==279131== For lists of detected and suppressed errors, rerun with: -s
 ==279131== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 \end{verbatim}
+}
 
 Além disso, o programa paralelo não foi possível ser testado, dado que o próprio MPI ou mais especificamente Open-MPI possui vazamentos de memória até mesmo em execuções simples, o que dificulta a utilização do \textit{Valgrind}. Apesar disso o código foi extensivamente revisado e não possui nenhum vazamento de memória aparente.
 
@@ -288,6 +291,8 @@ Além disso, o programa paralelo não foi possível ser testado, dado que o pró
 
 Para avaliação do desempenho sequêncial será avaliado entradas com 1e7 amostras (números) obtidas de uma amostragem de 1e5 até 2e9 (com probabilidade uniforme). Veja abaixo o perfil de desempenho do programa, é possível observar que a oportunidade de paralelização da chamada a função divisora pode representar um alto ganho de desempenho, visto que a maior parte do tempo é gasto nessa parte (98,52\% do tempo é gasto fazendo essa parte). Isto vai de acordo com a estratégia de paralelização adotada que pode representar ganhos significativos.
 
+{
+\scriptsize
 \begin{verbatim}
 Each sample counts as 0.01 seconds.
   %   cumulative   self              self     total           
@@ -301,9 +306,10 @@ Each sample counts as 0.01 seconds.
   0.00     63.61     0.00        1     0.00     0.00  dfpack_prime_mask_to_vector
   0.00     63.61     0.00        1     0.00     0.00  dfpack_sieve_of_eratosthenes
 \end{verbatim}
-
+}
 \subsection{Ganhos com a Paralelização}
 
+Agora finalmente será abordado os ganhos obtidos com a paralelização e análises de alguns resultados obtidos.
 
 \section{Conclusão}
 

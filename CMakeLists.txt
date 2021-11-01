@@ -46,7 +46,7 @@ target_link_libraries(serialdf
   PRIVATE
   m
   MPI::MPI_C)
-#target_compile_options(serialdf PRIVATE -pg -g -O3)
+target_compile_options(serialdf PRIVATE -O3)
 #target_compile_options(serialdf PRIVATE -pg -g)
 #target_link_options(serialdf PRIVATE -pg -g)
 
@@ -66,6 +66,7 @@ target_link_libraries(paralleldf
   PRIVATE
   m
   MPI::MPI_C)
+target_compile_options(paralleldf PRIVATE -O3)
 #target_compile_options(paralleldf PRIVATE "${mpi_compile}")
 #target_link_options(paralleldf PRIVATE "${mpi_link}")
 
