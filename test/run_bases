@@ -2,14 +2,15 @@
 make
 fin=./data/t1e4; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdout_serial.txt
 fin=./data/t1e5; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdout_serial.txt
-fin=./data/t1e6; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdou$n_t_serial.txt
-fin=./data/t1e7; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdou$n_t_serial.txt
+fin=./data/t1e6; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdout_serial.txt
+fin=./data/t1e7; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdout_serial.txt
 
 
-for i in $(seq 2 4 1)
+for i in $(seq 2 24)
 do
-				fin=./data/t1e4; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_$n_parallel.txt > "$fin"_stdout_$n_parallel.txt
-				fin=./data/t1e5; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_$n_parallel.txt > "$fin"_stdout_$n_parallel.txt
-				fin=./data/t1e6; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_$n_parallel.txt > "$fin"_stdout_$n_parallel.txt
-				fin=./data/t1e7; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_$n_parallel.txt > "$fin"_stdout_$n_parallel.txt
+	echo $i
+				fin=./data/t1e4; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_"$i"_parallel.txt > "$fin"_stdout_"$i"_parallel.txt
+				fin=./data/t1e5; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_"$i"_parallel.txt > "$fin"_stdout_"$i"_parallel.txt
+				fin=./data/t1e6; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_"$i"_parallel.txt > "$fin"_stdout_"$i"_parallel.txt
+				fin=./data/t1e7; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_"$i"_parallel.txt > "$fin"_stdout_"$i"_parallel.txt
 done
