@@ -39,14 +39,15 @@ add_definitions(-DNDEBUG)
 
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
 list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)
+#list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel_hybrid.c)
 #list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial_blocks.c)
-add_executable(serialdf ${SRC_FILES})
-#target_link_libraries(serialdf m)
-target_link_libraries(serialdf
+add_executable(serial-df ${SRC_FILES})
+#target_link_libraries(serial-df m)
+target_link_libraries(serial-df
   PRIVATE
   m
   MPI::MPI_C)
-target_compile_options(serialdf PRIVATE -O3)
+target_compile_options(serial-df PRIVATE -O3)
 #target_compile_options(serialdf PRIVATE -pg -g)
 #target_link_options(serialdf PRIVATE -pg -g)
 
@@ -61,15 +62,34 @@ target_compile_options(serialdf PRIVATE -O3)
 file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
 #list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial_blocks.c)
 list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial.c)
-add_executable(paralleldf ${SRC_FILES})
-target_link_libraries(paralleldf
+#list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel_hybrid.c)
+add_executable(parallel-df ${SRC_FILES})
+target_link_libraries(parallel-df
   PRIVATE
   m
   MPI::MPI_C)
-target_compile_options(paralleldf PRIVATE -O3)
+target_compile_options(parallel-df PRIVATE -O3)
 #target_compile_options(paralleldf PRIVATE "${mpi_compile}")
 #target_link_options(paralleldf PRIVATE "${mpi_link}")
 
 #target_compile_options(paralleldf PRIVATE ${MPI_C_COMPILE_FLAGS})
 #target_link_options(paralleldf PRIVATE ${MPI_C_LINK_FLAGS})
 
+
+file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.c)
+#list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial_blocks.c)
+list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/serial.c)
+#list(REMOVE_ITEM SRC_FILES ${PROJECT_SOURCE_DIR}/src/parallel.c)
+
+find_package(OpenMP)
+if (OPENMP_FOUND)
+    add_executable(parallel-hybrid-df ${SRC_FILES})
+    target_link_libraries(parallel-hybrid-df
+      PRIVATE
+      m
+      MPI::MPI_C)
+    #target_compile_options(parallel-hybrid-df PRIVATE -O3)
+    #add_executable(parallel-hybrid-df ${SRC_FILES})
+    target_compile_options(parallel-hybrid-df PRIVATE -O3 -Wall -DPARALLEL -fopenmp)
+    target_link_options(parallel-hybrid-df PRIVATE -fopenmp)
+endif()

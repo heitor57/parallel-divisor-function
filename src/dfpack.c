@@ -5,6 +5,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef PARALLEL
+#include <omp.h>
+#endif
 // transforms the index to a real value
 #define dfpack_idx_to_value(idx) (idx) * 2 + 1
 // transforms a real value to a index of the vector
@@ -124,6 +127,10 @@ int *dfpack_serial_df(int *integers, int max_number, int num_integers) {
   int *integers_num_divisors = malloc(num_integers * sizeof(int));
   // not saving directly just to profile only the computation
   // Calculate the divisor function for each integer
+
+#ifdef PARALLEL
+#pragma omp parallel for
+#endif
   for (int i = 0; i < num_integers; i++) {
     integers_num_divisors[i] = dfpack_df(integers[i], primes, num_primes);
 #ifndef NDEBUG

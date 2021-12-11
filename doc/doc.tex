@@ -53,7 +53,7 @@ números, uma função divisora é uma função aritmética relacionada aos divi
 de um inteiro. Quando referida como função divisora, ela conta o número de
 divisores de um inteiro (incluindo 1 e o próprio número). Diversas propriedades
 matemáticas podem ser observadas atráves da observação da função divisora ao
-longo de diferentes amostragens, que pode potencialmente auxiliar matematicos
+longo de diferentes amostragens, que pode potencialmente auxiliar matemáticos
 nas suas áreas de pesquisas, e talvez até mesmo no caso de um algoritmo
 suficientemente eficiente pode ajudar a eliminar ou "reforçar" ainda mais
 colorarios existentes na área.
@@ -84,7 +84,7 @@ A paralelização da aplicação será dividida em 4 partes, as quais terão um 
 
 \subsection{Problema}
 
-Como mostrado na seção anterior o
+Como mostrado na subseção anterior o
 problema é simples e consiste em determinar o número de divisores exatos dos elementos $a_i$ de um vetor $A$ de tamanho $N$.
 
 \section{Solução}
@@ -309,7 +309,23 @@ Each sample counts as 0.01 seconds.
 }
 \subsection{Ganhos com a Paralelização}
 
-Agora finalmente será abordado os ganhos obtidos com a paralelização e análises de alguns resultados obtidos.
+Agora finalmente será abordado os ganhos obtidos com a paralelização e análises de alguns resultados obtidos. Pela tabela é possível ver que de acordo com o aumento do número de processos na versão paralela "P2", "P3", "P4", e etc há também a diminuição do tempo, em todas as bases parece ter um speed up máximo de 10x com 24 processos. Apesar de ainda não ser próximo do speed up teórico é uma boa melhora. Também é importante notar que como a arquitetura é mestre-escravo quando há 2 processos é quase a mesma coisa que o serial.
+
+\begin{table}[H]
+  \tiny
+  \begin{tabular}{|c|ccccccc|}
+    \hline
+    Entrada& S & P2 & P3 & P4 & P8 & P16 & P24\\
+    \hline
+    1e4 & 0.06722 & 0.065067 & 0.030805 & 0.021386 & 0.01734 & 0.00832 & 0.006639\\
+    1e5 & 0.641231 & 0.640219 & 0.286639 & 0.188591 & 0.139259 & 0.076519 & 0.050823\\
+    1e6 & 5.366242 & 5.270993 & 2.722727 & 1.832781 & 0.807689 & 0.749196 & 0.493886\\
+    1e7 & 52.446117 & 52.784925 & 26.903649 & 18.206626 & 8.040143 & 7.457124 & 4.9046\\
+    \hline
+  \end{tabular}
+  \caption{Algoritmo sequêncial e paralelo com diferentes quantidades de processos em paralelo.}
+\end{table}
+
 
 \section{Conclusão}
 
@@ -317,6 +333,8 @@ Com este trabalho foi possível ter uma melhor ideia sobre como utilizar o MPI n
 
 Os resultados obtidos demonstraram que há mais ganho na paralelização da tarefa da execução da função divisora, pelo menos para o intervalo de números inteiros trabalhados. Em trabalhos futuros dóminios mais complicados com maior intervalo de valores podem ser explorados para propor novas soluções paralelas, até mesmo para o crivo de Eratóstenes. Interessante notar que no caso não há necessidade e pelo overhead de comunicação existe uma grande possibilidade de no caso com as entradas atuais só piorasse os resultados. Além disso, análises mais granulares podem ser feitas sobre os  resultados das execuções paralelas para propor melhoras.
 
-\bibliographystyle{plainnat}
-\bibliography{doc.bib}
+Também foi possível observar que a parelelização foi feita com sucesso, escalando bem e tendo ganhos significativos.
+
+%\bibliographystyle{plainnat}
+%\bibliography{doc.bib}
 \end{document}
