@@ -6,7 +6,7 @@ fin=./data/t1e6; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$f
 fin=./data/t1e7; echo $fin serial; ./serialdf "$fin".txt "$fin"_serial.txt > "$fin"_stdout_serial.txt
 
 
-for i in $(seq 2 24)
+for i in $(seq 2 2 12)
 do
 	echo $i
 				fin=./data/t1e4; echo $fin parallel; mpirun -n $i ./paralleldf "$fin".txt "$fin"_"$i"_parallel.txt > "$fin"_stdout_"$i"_parallel.txt
