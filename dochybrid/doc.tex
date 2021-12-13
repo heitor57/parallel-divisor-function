@@ -279,7 +279,7 @@ Nesta seção é inicialmente apresentado um resultado de uma execução simples
 Primeiramente, a seguir é mostrado um simples caso de entrada e saída do programa que demonstra como o mesmo funciona e como se comporta. Veja a seguir a execução do programa sequencial:
 
 \begin{verbatim}
-$ ./serialdf ./data/entrada.txt ./data/saida.txt  
+$ ./serial-df ./data/entrada.txt ./data/saida.txt  
 Time spend with computation: 0.005838
 
 $ pr -m -t ./data/entrada.txt ./data/saida.txt | head
@@ -308,7 +308,7 @@ Para verificação de qualquer vazamento de memória foi utilizado o \textit{Val
 ==279131== Memcheck, a memory error detector
 ==279131== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
 ==279131== Using Valgrind-3.17.0 and LibVEX; rerun with -h for copyright info
-==279131== Command: ./serialdf ./data/entrada.txt ./data/saida.txt
+==279131== Command: ./serial-df ./data/entrada.txt ./data/saida.txt
 ==279131== 
 Time spend with computation: 0.097611
 ==279131== 
