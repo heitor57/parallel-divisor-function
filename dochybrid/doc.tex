@@ -36,12 +36,18 @@
 \setmainfont{QTPalatine}
 
 
-\title{Trabalho Prático - Identificação de números primos usando computação paralela híbrida \\
+\title{Trabalho Prático 3\\ Identificação de números primos usando computação paralela híbrida \\
 	\large Computação Paralela}
 
 \author{Heitor L. Werneck}
 \begin{document}
+
 \maketitle
+
+\newpage
+\tableofcontents
+
+\newpage
 
 \section{Introdução}
 \subsection{Contextualização}
@@ -181,12 +187,12 @@ Para a paralelização no código foi especificamente modificado a linha 18 da f
 
 A proposta de decomposição de dados nessa parte da computação pode trazer muitos ganhos por ser embaraçosamente paralela e também consegue escalar bem pelo mesmo motivo. Como mostrado no trabalho prático 1 com uma entrada grande o programa consegue escalar próximo do limite teórico de speed up pela natureza do problema, que não um baixo overhead de comunicação, é altamente paralelizável e etc.
 
-Por fim, a figura \ref{fig:mpiparallel} mostra como a proposta funciona em um cluster de computadores. A figura só mostra os escravos, mas nessa proposta há também o mestre, responsável por designar as cargas de trabalho aos escravos.
+Por fim, a figura \ref{fig:mpiparallel} mostra como a proposta funciona em um cluster de computadores.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{./mpiparallel.png}
-	\caption{Escravos da proposta de paralelização com MPI. Nesta figura só falta o mestre, que fica em um dos nós para distribuir as cargas de trabalho.}
+	\caption{Paralelização com MPI em um cluster de computadores.}
 	\label{fig:mpiparallel}
 \end{figure}
 
@@ -198,7 +204,7 @@ A proposta paralela híbrida consiste da utilização da proposta anterior para 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\linewidth]{./hybridparallel}
-	\caption{Escravos da proposta de paralelização híbrida. Nesta figura só falta o mestre, que fica em um dos nós para distribuir as cargas de trabalho.}
+	\caption{Escravos da proposta de paralelização híbrida. Nesta figura só falta o mestre, que fica em um dos nós para distribuir as cargas de trabalho e não possui threads.}
 	\label{fig:hybridparallel}
 \end{figure}
 
@@ -327,11 +333,18 @@ Além disso, o programa paralelo não foi possível ser testado, dado que o pró
 
 \subsection{Resultados da Paralelização}
 
-Para a avaliação dos resultados em um ambiente real de cluster de computadores foi utilizado três computadores em uma rede local. Como estes computadores não tinham um sistema de arquivos distribuídos foi encontrado alguns inconvenientes na execução neste ambiente. Para resolver isso foi utilizado uma abordagem com Docker Swarm que utiliza o sistema operacional Alpine Linux, apresentada em um artigo do IEEE CCWC \cite{nguyen2017distributed}\footnote{\url{https://github.com/NLKNguyen/alpine-mpich}}. A abordagem proposta neste paper foi adaptada, com uma versão mais recente do sistema operacional e alguns outros ajustes para o caso de uso deste trabalho. A imagem do Docker utilizada para realização dos experimentos está disponível no Docker Hub \footnote{\url{https://hub.docker.com/repository/docker/heitor57/df-mpi}}, além da versão modificada da proposta do paper \footnote{\url{https://hub.docker.com/repository/docker/heitor57/alpine-mpich}}.
+Para avaliar os ganhos da paralelização híbrida feita é importante a utilizar em um ambiente real de cluster de computadores. Para esse trabalho foi utilizado três computadores em uma rede local. Como estes computadores não tinham um sistema de arquivos distribuídos foi encontrado alguns inconvenientes na execução neste ambiente. Para resolver isso foi utilizado uma abordagem com Docker Swarm que utiliza o sistema operacional Alpine Linux, apresentada em um artigo do IEEE CCWC \cite{nguyen2017distributed}\footnote{\url{https://github.com/NLKNguyen/alpine-mpich}}. A abordagem proposta neste paper foi adaptada, com uma versão mais recente do sistema operacional e alguns outros ajustes para o caso de uso deste trabalho. A imagem do Docker utilizada para realização dos experimentos está disponível no Docker Hub \footnote{\url{https://hub.docker.com/repository/docker/heitor57/df-mpi}}, além da versão modificada da proposta do paper \footnote{\url{https://hub.docker.com/repository/docker/heitor57/alpine-mpich}}.
 
-Como pode ser visto na tabela \ref{tab:results} o speed up máximo ficou em torno de 10 considerando somente 12 processos ou threads (P4 e HP4) que trabalham na computação dos resultados efetivamente (desconsiderando o nó mestre).
+Os conjuntos de dados utilizados são variações do apresentado na subseção de desempenho sequencial, com diferentes quantidades de números na entrada (i.e., 1e4, 1e5, 1e6 e 1e7).
 
-., os resultados não da versão híbrida (HP2, HP3 e HP4) não foram tão superiores quanto a versão puramente MPI (P2, P3 e P4). Isso confirmou alguns dos resultados esperados.
+A tabela \ref{tab:results} apresenta os tempos de computação dos algoritmos. A abordagem serial apresentou resultados significativamente piores que as outras, como esperado, mesmo no menor conjunto de dados (i.e., t1e4). Apesar disso, no conjunto de dados t1e4 foi onde a abordagem serial teve seu melhor resultado comparado com os outros métodos. Por conta de ser uma base de dados menor a eficiência do algoritmo paralelo diminui muito bruscamente, como pode ser visto na tabela \ref{tab:results_eficiencia}. A eficiência é uma medida do uso da capacidade computacional. Ela mede a proporção entre o desempenho e o número de recursos disponíveis para atingir esse desempenho.
+
+Além disso, os algoritmos paralelos, apresentados nas colunas P (paralelo somente com MPI) e HP (paralelo híbrido), apresentaram speed ups próximos do linear quando a carga de trabalho foi alta. Apesar disso, os resultados foram afetados por conta da execução em cluster, que não foi feita no trabalho prático 1, e o speed up ficou minimamente menor quando o número de escravos total é igual ao do trabalho prático 1, um resultado esperado. Fora isto, esperava-se um resultado de speed up um pouco mais próximo do linear devido a solução paralela não apresentar dependências, mas em trabalhos futuros pode ser abordado a execução com uma maior carga de trabalho ou números em grandezas maiores (necessitaria uma adaptação do código para esse caso, para representar números maiores) para avaliar o impacto.
+
+No geral foi possível observar que a proposta paralela híbrida conseguiu ganhar da paralela que usa somente MPI por diferenças mínimas nas tabelas \ref{tab:results}, \ref{tab:results_speedup} e \ref{tab:results_eficiencia} que não são significativas. Apesar disso, entende-se que isso se deu por conta dos overheads que são minimizados com a solução que combina paralelismo em memória compartilhada e distribuída. Caso a solução proposta tivesse mais dependências na paralelização, então seria esperado que a solução híbrida obtivesse mais ganhos. Como não é esse o caso, assim como previsto na seção \ref{sec:solucao_paralela_hibrida}, o algoritmo não apresenta ganhos significativos sobre a versão puramente MPI, visto também aqueles cenários no qual o overhead da criação de processos não faz muita diferença como discutido na seção \ref{sec:solucao_paralela_hibrida}.
+
+
+Como pode ser visto na tabela \ref{tab:results_speedup} o speed up máximo foi de 9 e 10 considerando somente 12 processos ou threads (P4 e HP4) que trabalham na computação dos resultados efetivamente (desconsiderando o nó mestre).
 
 
 \begin{table}[H]
@@ -350,6 +363,42 @@ Como pode ser visto na tabela \ref{tab:results} o speed up máximo ficou em torn
       \end{adjustbox}
 	\caption{Tempo de execução em segundos do algoritmo sequencial (S), paralelo (P) e paralelo híbrido (HP) com diferentes quantidades processos escravos (2, 3 e 4) ou threads (2, 3 e 4) em cada máquina do cluster.}
 	\label{tab:results}
+\end{table}
+
+\begin{table}[H]
+	\footnotesize
+\begin{adjustbox}{center}
+	\begin{tabular}{|c|ccc|ccc|}
+		\hline
+		Entrada & P2       & P3       & P4       & HP2       & HP3      & HP4      \\
+		\hline
+		t1e4    & 5.1711  & 6.07478 &  3.57508 & 4.50058 & 5.10759 & 6.54168 \\
+		t1e5    & 5.61307 & 7.78522 & 10.1133  & 5.86017 & 7.2663  & 9.11258 \\
+		t1e6    & 4.74992 & 6.86238 &  8.73211 & 4.82192 & 6.88795 & 8.82608 \\
+		t1e7    & 4.91166 & 7.22788 &  9.50955 & 4.91256 & 7.27425 & 9.59181 \\
+		\hline
+	\end{tabular}
+      \end{adjustbox}
+	\caption{Speed up do algoritmo paralelo (P) e paralelo híbrido (HP) com diferentes quantidades processos escravos (2, 3 e 4) ou threads (2, 3 e 4) em cada máquina do cluster.}
+	\label{tab:results_speedup}
+\end{table}
+
+\begin{table}[H]
+	\footnotesize
+\begin{adjustbox}{center}
+	\begin{tabular}{|c|ccc|ccc|}
+		\hline
+		Entrada & P2       & P3       & P4       & HP2       & HP3      & HP4      \\
+		\hline
+		t1e4    & 0.861849 & 0.674976 & 0.297923 & 0.750097 & 0.56751  & 0.54514  \\
+		t1e5    & 0.935512 & 0.865024 & 0.842776 & 0.976695 & 0.807366 & 0.759382 \\
+		t1e6    & 0.791654 & 0.762487 & 0.727676 & 0.803653 & 0.765328 & 0.735507 \\
+		t1e7    & 0.818611 & 0.803098 & 0.792462 & 0.81876  & 0.80825  & 0.799317 \\
+		\hline
+	\end{tabular}
+      \end{adjustbox}
+	\caption{Eficiência do algoritmo paralelo (P) e paralelo híbrido (HP) com diferentes quantidades processos escravos (2, 3 e 4) ou threads (2, 3 e 4) em cada máquina do cluster.}
+	\label{tab:results_eficiencia}
 \end{table}
 
 
@@ -374,12 +423,9 @@ Como pode ser visto na tabela \ref{tab:results} o speed up máximo ficou em torn
 \section{Conclusão}
 \label{sec:conclusao}
 
+Com este trabalho foi possível ter uma melhor ideia sobre como utilizar o MPI e OpenMP na prática e seus possíveis ganhos. A abordagem de paralelização híbrida (memória compartilhada e distribuída) foi explorada e exercitada na prática. As duas abordagens de paralelização, com MPI (especificamente Open-MPI) e OpenMP se mostraram práticas para utilização em ambientes reais.
 
-Com este trabalho foi possível ter uma melhor ideia sobre como utilizar o MPI na prática e seus possíveis ganhos quando bem utilizado. Também diversas ideias de soluções paralelizáveis não são práticas pelo tempo de comunicação e outros fatores relacionados a computação paralela como sincronização, isto foi observado na prática para a solução final proposta neste trabalho. Além disso o MPI se demonstrou um excelente padrão para definição de um sistema computacional em paralelo.
-
-Os resultados obtidos demonstraram que há mais ganho na paralelização da tarefa da execução da função divisora, pelo menos para o intervalo de números inteiros trabalhados. Em trabalhos futuros domínios mais complicados com maior intervalo de valores podem ser explorados para propor novas soluções paralelas, até mesmo para o crivo de Eratóstenes. Interessante notar que no caso não há necessidade e pelo overhead de comunicação existe uma grande possibilidade de no caso com as entradas atuais só piorasse os resultados. Além disso, análises mais granulares podem ser feitas sobre os  resultados das execuções paralelas para propor melhoras.
-
-Também foi possível observar que a paralelização foi feita com sucesso, escalando bem e tendo ganhos significativos.
+Os três algoritmos implementados (i.e., serial, paralelo e híbrido paralelo) foram avaliados pelo tempo de execução, speed up e eficiência. Os resultados obtidos não demonstraram ganhos significativos da abordagem puramente MPI comparado com a abordagem híbrida (utilizando MPI e OpenMP). Isso se deu pela natureza da solução paralela proposta (i.e., embaraçosamente paralela), que não apresenta dependência e não necessita de comunicação entre os \textit{workers}, deste modo os ganhos da solução híbrida são limitados. Apesar disso as abordagens paralelas tiveram ganhos significativos sobre a serial, chegando a 9.5 de speed up.
 
 \bibliographystyle{plainnat}
 \bibliography{doc.bib}
