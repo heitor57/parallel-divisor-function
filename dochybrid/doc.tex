@@ -161,7 +161,7 @@ Each sample counts as 0.01 seconds.
 	}
 
 
-Para essa avaliação do desempenho sequencial foi avaliado entradas com 1e7 amostras (números) obtidas de uma amostragem de 1e5 até 2e9 (com probabilidade uniforme), assim como no trabalho prático 1. Nesse perfil de desempenho do programa, é possível observar que a oportunidade de paralelização da chamada a função divisora pode representar um alto ganho de desempenho, visto que a maior parte do tempo é gasto nessa parte (98,52\% do tempo é gasto fazendo essa parte), assim como observado no trabalho prático 1. Essa função apresenta uma oportunidade de paralelização alta, por não apresentar dependência entre as chamadas. Outras porções do código não possuem essa característica, além de não apresentarem a mesma importância no tempo total de execução do programa.
+Para essa avaliação do desempenho sequencial foi avaliado entradas com 1e7 amostras (números) obtidas de uma amostragem de 1e5 até 2e9 (com probabilidade uniforme), assim como no trabalho prático 1. Nesse perfil de desempenho do programa, é possível observar que a oportunidade de paralelização da chamada a função divisora pode representar um alto ganho de desempenho, visto que a maior parte do tempo é gasto nessa parte (98,52\% do tempo é gasto fazendo essa parte), assim como observado no trabalho prático 1. Essa função apresenta uma oportunidade de paralelização alta, por não apresentar dependência entre as chamadas. Outras porções do código não possuem essa característica juntamente com a importância no tempo total de execução do programa.
 
 \subsection{Proposta Paralela com MPI}
 
